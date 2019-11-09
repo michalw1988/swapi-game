@@ -6,7 +6,7 @@ export const ButtonWrapper = styled.div`
 `
 
 export const FightResultWrapper = styled.div`
-  min-height: 50px
+  min-height: 64px
 `
 
 export const LoaderComponent = styled.div`

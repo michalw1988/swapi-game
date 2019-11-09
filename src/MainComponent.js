@@ -2,17 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { OBJECTS_PER_PAGE, RESOURCE_FIGHT_ATTRIBUTES, FIGHT_RESUTLS_TEXTS } from './consts'
 import { getRandomPairNumbers} from './helpers'
 import { ButtonWrapper, FightResultWrapper, LoaderComponent } from './HelperComponents'
-
+import CardComponent from './CardComponent'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import { useStyles } from './materialStyles'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 
-function MainComponent() {
+const MainComponent = () => {
   const [loadingContent, setLoadingContent] = useState(false)
   const [resourceName, setResourceName] = useState('starships')
   const [resourcesCount, setResourcesCount] = useState(null)
@@ -20,7 +18,6 @@ function MainComponent() {
   const [pair, setPair] = useState([null, null])
   const [winnerNumber, setWinnerNumber] = useState(null)
   const [sidesStats, setSidesStats] = useState([0, 0])
-
   const classes = useStyles()
 
   // get total resources count and set initial pair
@@ -95,29 +92,8 @@ function MainComponent() {
       <Typography variant="h6" className={classes.pageSubtitle}>{resourceName.toUpperCase()}</Typography>
 
       <Grid container spacing={3}>
-        {
-          pair.map((object, i) => {
-            return (
-              <Grid item sm={6} xs={12} key={i}>
-                <Typography variant="h5" className={classes.cardTitle}>Side {i+1} ({sidesStats[i]} points)</Typography>
-                {
-                  <Card className={classes.card}>
-                    {
-                      object && <CardContent>
-                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                          {object.name}
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                          Fight attribute: {object.crew || object.mass}
-                        </Typography>
-                      </CardContent>
-                    }
-                  </Card>
-                }
-              </Grid>
-            )
-          })
-        }
+        <CardComponent object={pair[0]} index={0} sidesStats={sidesStats} resourceName={resourceName} />
+        <CardComponent object={pair[1]} index={1} sidesStats={sidesStats} resourceName={resourceName} />
       </Grid>
 
       <FightResultWrapper>
@@ -130,7 +106,10 @@ function MainComponent() {
         <Button variant="contained"
           color="primary"
           className={classes.button}
-          onClick={() => setResourcesPairNumbers(getRandomPairNumbers(resourcesCount))} >
+          onClick={() => {
+            setPair([null, null])
+            setResourcesPairNumbers(getRandomPairNumbers(resourcesCount))
+          }}>
           Let's fight again
         </Button>
       </ButtonWrapper>
@@ -141,6 +120,7 @@ function MainComponent() {
           onClick={() => {
             setResourceName(resourceName === 'starships' ? 'people' : 'starships')
             setResourcesPairNumbers([null, null])
+            setPair([null, null])
             setWinnerNumber(null)
             setSidesStats([0, 0])
           }}>
