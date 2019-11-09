@@ -101,15 +101,17 @@ function MainComponent() {
               <Grid item sm={6} xs={12} key={i}>
                 <Typography variant="h5" className={classes.cardTitle}>Side {i+1} ({sidesStats[i]} points)</Typography>
                 {
-                  object && <Card>
-                    <CardContent>
-                      <Typography className={classes.title} color="textSecondary" gutterBottom>
-                        {object.name}
-                      </Typography>
-                      <Typography variant="body2" component="p">
-                        Fight attribute: {object.crew || object.mass}
-                      </Typography>
-                    </CardContent>
+                  <Card className={classes.card}>
+                    {
+                      object && <CardContent>
+                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                          {object.name}
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                          Fight attribute: {object.crew || object.mass}
+                        </Typography>
+                      </CardContent>
+                    }
                   </Card>
                 }
               </Grid>
@@ -120,7 +122,7 @@ function MainComponent() {
 
       <FightResultWrapper>
         <Typography variant="h5" className={classes.resultText}>
-          {FIGHT_RESUTLS_TEXTS[winnerNumber]}
+          {!loadingContent && FIGHT_RESUTLS_TEXTS[winnerNumber]}
         </Typography>
       </FightResultWrapper>
       
