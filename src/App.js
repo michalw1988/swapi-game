@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
-import MainComponent from './MainComponent/MainComponent';
+import MainComponent from './MainComponent';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 

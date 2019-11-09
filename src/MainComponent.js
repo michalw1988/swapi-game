@@ -1,70 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import './MainComponent.scss'
-import styled from 'styled-components';
+import { OBJECTS_PER_PAGE, RESOURCE_FIGHT_ATTRIBUTES, FIGHT_RESUTLS_TEXTS } from './consts'
+import { getRandomPairNumbers} from './helpers'
+import { ButtonWrapper, FightResultWrapper } from './HelperComponents'
 
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { useStyles } from './materialStyles'
 
-
-const useStyles = makeStyles(theme => ({
-  pageTitle: {
-    marginTop: 32,
-    marginBottom: 32,
-    textAlign: 'center',
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-  input: {
-    display: 'none',
-  },
-  card: {
-    minWidth: 275,
-  },
-  cardTitle: {
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  resultText: {
-    marginTop: 32,
-    marginBottom: 32,
-    textAlign: 'center',
-  }
-}));
-
-
-const ButtonWrapper = styled.div`
-  text-align: center;
-`;
-
-const OBJECTS_PER_PAGE = 10
-const RESOURCE_FIGHT_ATTRIBUTES = {
-  'starships': 'crew',
-  'people': 'mass',
-}
-const FIGHT_RESUTLS_TEXTS = [
-  'There is no winner in this fight. Both sides are eqeal.',
-  'Side 1 won this fight!',
-  'Side 2 won this fight!',
-  'Winner cannot be determined in this fight. Some parameters are unknown.'
-]
-
-const getRandomInt = (min, max) => {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-const getRandomPairNumbers = totalCount => {
-  const firstNumber = getRandomInt(1, totalCount)
-  let secondNumber = getRandomInt(1, totalCount)
-  while (firstNumber === secondNumber) secondNumber = getRandomInt(1, totalCount) // make sure it's not the same number
-  return [firstNumber, secondNumber]
-}
 
 function MainComponent() {
   const [resourceName, setResourceName] = useState('starships')
@@ -134,12 +79,13 @@ function MainComponent() {
   return (
     <div>
       <Typography variant="h3" className={classes.pageTitle}>Star Wars fights</Typography>
+      <Typography variant="h6" className={classes.pageSubtitle}>{resourceName.toUpperCase()}</Typography>
 
       <Grid container spacing={3}>
         {
           pair.map((object, i) => {
             return (
-              <Grid item xs={6} key={i}>
+              <Grid item sm={6} xs={12} key={i}>
                 <Typography variant="h5" className={classes.cardTitle}>Side {i+1} ({sidesStats[i]} points)</Typography>
                 {
                   object && <Card className={classes.card} >
@@ -159,16 +105,31 @@ function MainComponent() {
         }
       </Grid>
 
-      <Typography variant="h5" className={classes.resultText}>
-        {FIGHT_RESUTLS_TEXTS[winnerNumber]}
-      </Typography>
+      <FightResultWrapper>
+        <Typography variant="h5" className={classes.resultText}>
+          {FIGHT_RESUTLS_TEXTS[winnerNumber]}
+        </Typography>
+      </FightResultWrapper>
       
       <ButtonWrapper>
         <Button variant="contained"
           color="primary"
           className={classes.button}
-          onClick={() =>setResourcesPairNumbers(getRandomPairNumbers(resourcesCount))} >
+          onClick={() => setResourcesPairNumbers(getRandomPairNumbers(resourcesCount))} >
           Let's fight again
+        </Button>
+      </ButtonWrapper>
+
+      <ButtonWrapper>
+        <Button variant="contained"
+          className={classes.button}
+          onClick={() => {
+            setResourceName(resourceName === 'starships' ? 'people' : 'starships')
+            setResourcesPairNumbers([null, null])
+            setWinnerNumber(null)
+            setSidesStats([0, 0])
+          }}>
+          Play with {resourceName === 'starships' ? 'people' : 'starships'} now
         </Button>
       </ButtonWrapper>
     </div>
