@@ -6,6 +6,12 @@ const RESOURCE_FIGHT_ATTRIBUTES = {
   'starships': 'crew',
   'people': 'mass',
 }
+const FIGHT_RESUTLS_TEXTS = [
+  'There is no winner in this fight. Both sides are eqeal.',
+  'Side 1 won this fight!',
+  'Side 2 won this fight!',
+  'Winner cannot be determined in this fight. Some parameters are unknown.'
+]
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min)
@@ -21,11 +27,12 @@ const getRandomPairNumbers = totalCount => {
 }
 
 function MainComponent() {
-  const [resourceName, setResourceName] = useState('starships')
+  const [resourceName, setResourceName] = useState('people')
   const [resourcesCount, setResourcesCount] = useState(null)
   const [resourcesPairNumbers, setResourcesPairNumbers] = useState([null, null])
   const [pair, setPair] = useState([null, null])
   const [winnerNumber, setWinnerNumber] = useState(null)
+  const [sidesStats, setSidesStats] = useState([0, 0])
 
   // get total resources count and set initial pair
   useEffect(() => {
@@ -62,11 +69,24 @@ function MainComponent() {
 
   const declareWinner = (data, resourceName) => {
     const fightAttribute = RESOURCE_FIGHT_ATTRIBUTES[resourceName];
-    let winnerNumber = 0
-    if (data[0][fightAttribute] > data[1][fightAttribute]) winnerNumber = 1
-    if (data[0][fightAttribute] < data[1][fightAttribute]) winnerNumber = 2
-    if (data[0][fightAttribute] === 'unknown' || data[1][fightAttribute] === 'unknown') winnerNumber = -1
+    let winnerNumber = 0 // a tie
+    if (parseInt(data[0][fightAttribute], 10) > parseInt(data[1][fightAttribute], 10)) {
+      winnerNumber = 1
+      updateSideStats(0)
+    }
+    else if (parseInt(data[0][fightAttribute], 10) < parseInt(data[1][fightAttribute], 10)) {
+      winnerNumber = 2
+      updateSideStats(1)
+    }
+    else if (data[0][fightAttribute] === 'unknown' || data[1][fightAttribute] === 'unknown') winnerNumber = 3 // when one of the sides has unknown parameters
     setWinnerNumber(winnerNumber)
+  }
+
+  const updateSideStats = sideNumber => {
+    const newSidesStats = [...sidesStats]
+    let newSideWinCount = newSidesStats[sideNumber]
+    newSidesStats[sideNumber] = ++newSideWinCount
+    setSidesStats(newSidesStats)
   }
 
   return (
@@ -74,24 +94,27 @@ function MainComponent() {
       <h1>SW fights!</h1>
       {
         pair.map((object, i) => {
-          if (!object) return <div>Loading...</div>
+          if (!object) return <div key={i}>Loading...</div>
 
           return (
-            <>
-              <h2 key={i}>{ object.name}</h2>
+            <div key={i}>
+              <h2>{ object.name}</h2>
               <div>Fight attribute: {object.crew || object.mass}</div>
-            </>
+            </div>
           )
         })
       }
 
       <br/>
-      <h2>The winner is: {winnerNumber}</h2>
+      <h2>{FIGHT_RESUTLS_TEXTS[winnerNumber]}</h2>
+
+      <div>Side 1: {sidesStats[0]}</div>
+      <div>Side 2: {sidesStats[1]}</div>
 
       <br/>
       <button onClick={() => {
         setResourcesPairNumbers(getRandomPairNumbers(resourcesCount))
-      }}>Get new data</button>
+      }}>Let's fight again</button>
     </div>
   );
 }
