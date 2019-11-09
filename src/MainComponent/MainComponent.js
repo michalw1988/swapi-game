@@ -1,5 +1,45 @@
 import React, { useState, useEffect } from 'react'
 import './MainComponent.scss'
+import styled from 'styled-components';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+
+
+const useStyles = makeStyles(theme => ({
+  pageTitle: {
+    marginTop: 32,
+    marginBottom: 32,
+    textAlign: 'center',
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+  input: {
+    display: 'none',
+  },
+  card: {
+    minWidth: 275,
+  },
+  cardTitle: {
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  resultText: {
+    marginTop: 32,
+    marginBottom: 32,
+    textAlign: 'center',
+  }
+}));
+
+
+const ButtonWrapper = styled.div`
+  text-align: center;
+`;
 
 const OBJECTS_PER_PAGE = 10
 const RESOURCE_FIGHT_ATTRIBUTES = {
@@ -27,12 +67,14 @@ const getRandomPairNumbers = totalCount => {
 }
 
 function MainComponent() {
-  const [resourceName, setResourceName] = useState('people')
+  const [resourceName, setResourceName] = useState('starships')
   const [resourcesCount, setResourcesCount] = useState(null)
   const [resourcesPairNumbers, setResourcesPairNumbers] = useState([null, null])
   const [pair, setPair] = useState([null, null])
   const [winnerNumber, setWinnerNumber] = useState(null)
   const [sidesStats, setSidesStats] = useState([0, 0])
+
+  const classes = useStyles();
 
   // get total resources count and set initial pair
   useEffect(() => {
@@ -42,12 +84,12 @@ function MainComponent() {
         setResourcesCount(data.count)
         setResourcesPairNumbers(getRandomPairNumbers(data.count))
       });
-  }, [])
+  }, [resourceName])
 
   // get data for given pair
   useEffect(() => {
     const urls = resourcesPairNumbers.map((number, i) => {
-      if (!number) return
+      if (!number) return null
       const objectsPage = Math.ceil(number / OBJECTS_PER_PAGE)
       return `https://swapi.co/api/${resourceName}?page=${objectsPage}`
     })
@@ -65,7 +107,7 @@ function MainComponent() {
       setPair(data);
       declareWinner(data, resourceName)
     })
-  }, resourcesPairNumbers)
+  }, [resourcesPairNumbers, resourceName])
 
   const declareWinner = (data, resourceName) => {
     const fightAttribute = RESOURCE_FIGHT_ATTRIBUTES[resourceName];
@@ -91,30 +133,44 @@ function MainComponent() {
 
   return (
     <div>
-      <h1>SW fights!</h1>
-      {
-        pair.map((object, i) => {
-          if (!object) return <div key={i}>Loading...</div>
+      <Typography variant="h3" className={classes.pageTitle}>Star Wars fights</Typography>
 
-          return (
-            <div key={i}>
-              <h2>{ object.name}</h2>
-              <div>Fight attribute: {object.crew || object.mass}</div>
-            </div>
-          )
-        })
-      }
+      <Grid container spacing={3}>
+        {
+          pair.map((object, i) => {
+            return (
+              <Grid item xs={6} key={i}>
+                <Typography variant="h5" className={classes.cardTitle}>Side {i+1} ({sidesStats[i]} points)</Typography>
+                {
+                  object && <Card className={classes.card} >
+                    <CardContent>
+                      <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        {object.name}
+                      </Typography>
+                      <Typography variant="body2" component="p">
+                        Fight attribute: {object.crew || object.mass}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                }
+              </Grid>
+            )
+          })
+        }
+      </Grid>
 
-      <br/>
-      <h2>{FIGHT_RESUTLS_TEXTS[winnerNumber]}</h2>
-
-      <div>Side 1: {sidesStats[0]}</div>
-      <div>Side 2: {sidesStats[1]}</div>
-
-      <br/>
-      <button onClick={() => {
-        setResourcesPairNumbers(getRandomPairNumbers(resourcesCount))
-      }}>Let's fight again</button>
+      <Typography variant="h5" className={classes.resultText}>
+        {FIGHT_RESUTLS_TEXTS[winnerNumber]}
+      </Typography>
+      
+      <ButtonWrapper>
+        <Button variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={() =>setResourcesPairNumbers(getRandomPairNumbers(resourcesCount))} >
+          Let's fight again
+        </Button>
+      </ButtonWrapper>
     </div>
   );
 }
