@@ -16,7 +16,6 @@ const renderStarshipData = (object) => {
       <Typography component="p">Cargo [tonnes]: {object.cargo_capacity}</Typography>
       <Typography component="p">Consumables: {object.consumables}</Typography>
       <Typography component="p">Hyperdrive rating: {object.hyperdrive_rating}</Typography>
-
     </>
   )
 }

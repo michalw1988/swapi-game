@@ -68,7 +68,7 @@ const MainComponent = () => {
       winnerNumber = 2
       updateSideStats(1)
     }
-    else if (data[0][fightAttribute] === 'unknown' || data[1][fightAttribute] === 'unknown') winnerNumber = 3 // when one of the sides has unknown parameters
+    else if (data[0][fightAttribute] === 'unknown' || data[1][fightAttribute] === 'unknown') winnerNumber = 3 // when one of the sides has key parameter unknown
     setWinnerNumber(winnerNumber)
   }
 

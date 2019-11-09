@@ -7,6 +7,6 @@ const getRandomInt = (min, max) => {
 export const getRandomPairNumbers = totalCount => {
   const firstNumber = getRandomInt(1, totalCount)
   let secondNumber = getRandomInt(1, totalCount)
-  while (firstNumber === secondNumber) secondNumber = getRandomInt(1, totalCount) // make sure it's not the same number
+  while (firstNumber === secondNumber) secondNumber = getRandomInt(1, totalCount)
   return [firstNumber, secondNumber]
 }
