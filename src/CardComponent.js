@@ -8,17 +8,30 @@ import { useStyles } from './materialStyles'
 
 const renderStarshipData = (object) => {
   return (
-    <Typography variant="body2" component="p">
-      Crew: {object.crew}
-    </Typography>
+    <>
+      <Typography component="p">Class: {object.starship_class}</Typography>
+      <Typography component="p">Length [m]: {object.length}</Typography>
+      <Typography component="p"><strong>Crew: {object.crew}</strong></Typography>
+      <Typography component="p">Cost [credits]: {object.cost_in_credits}</Typography>
+      <Typography component="p">Cargo [tonnes]: {object.cargo_capacity}</Typography>
+      <Typography component="p">Consumables: {object.consumables}</Typography>
+      <Typography component="p">Hyperdrive rating: {object.hyperdrive_rating}</Typography>
+
+    </>
   )
 }
 
 const renderPersonData = (object) => {
   return (
-    <Typography variant="body2" component="p">
-      Mass: {object.mass}
-    </Typography>
+    <>
+      <Typography component="p">Gender: {object.gender}</Typography>
+      <Typography component="p">Bigth year: {object.bigth_year}</Typography>
+      <Typography component="p">Height: {object.height}</Typography>
+      <Typography component="p"><strong>Mass [kg]: {object.mass}</strong></Typography>
+      <Typography component="p">Skin color: {object.skin_color}</Typography>
+      <Typography component="p">Hair color: {object.hair_color}</Typography>
+      <Typography component="p">Eye color: {object.eye_color}</Typography>
+    </>
   )
 }
 

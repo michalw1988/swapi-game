@@ -15,7 +15,7 @@ export const useStyles = makeStyles(theme => ({
     textAlign: 'center',
   },
   card: {
-    minHeight: 200,
+    minHeight: 250,
   },
   cardTitle: {
     fontSize: 20,
