@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid'
 import { useStyles } from './materialStyles'
 
 
-const MainComponent = () => {
+const GameComponent = () => {
   const [loadingContent, setLoadingContent] = useState(false)
   const [resourceName, setResourceName] = useState('starships')
   const [resourcesCount, setResourcesCount] = useState(null)
@@ -116,6 +116,7 @@ const MainComponent = () => {
 
       <ButtonWrapper>
         <Button variant="contained"
+          id="change-resource-button"
           className={classes.button}
           onClick={() => {
             setResourceName(resourceName === 'starships' ? 'people' : 'starships')
@@ -131,4 +132,4 @@ const MainComponent = () => {
   )
 }
 
-export default MainComponent
+export default GameComponent

@@ -2,8 +2,8 @@ import { getRandomPairNumbers, getRandomInt } from './helpers'
 
 describe('Getting pair of number', () => {
   it('returns pair of number', () => {
-    const pairOfNumbers = getRandomPairNumbers(10);
-    expect(pairOfNumbers.length).toEqual(2)
+    const pairOfNumbers = getRandomPairNumbers(10)
+    expect(pairOfNumbers).toHaveLength(2)
   });
 
   it('returns numbers leower or equal to maximum', () => {
