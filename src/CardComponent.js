@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid'
 import { useStyles } from './materialStyles'
 
 
+const disaplayScore = (score) => `${score} ${score === 1 ? 'point' : 'points'}`
+
 const renderStarshipData = (object) => {
   return (
     <>
@@ -25,7 +27,7 @@ const renderPersonData = (object) => {
     <>
       <Typography component="p">Gender: {object.gender}</Typography>
       <Typography component="p">Bigth year: {object.bigth_year}</Typography>
-      <Typography component="p">Height: {object.height}</Typography>
+      <Typography component="p">Height [cm]: {object.height}</Typography>
       <Typography component="p"><strong>Mass [kg]: {object.mass}</strong></Typography>
       <Typography component="p">Skin color: {object.skin_color}</Typography>
       <Typography component="p">Hair color: {object.hair_color}</Typography>
@@ -39,7 +41,7 @@ const CardComponent = ({object, index, sidesStats, resourceName}) => {
 
   return (
     <Grid item sm={6} xs={12}>
-      <Typography variant="h5" className={classes.gridElementTitle}>Side {index + 1} ({sidesStats[index]} points)</Typography>
+    <Typography variant="h5" className={classes.gridElementTitle}>Side {index + 1} ({disaplayScore(sidesStats[index])})</Typography>
       {
         <Card className={classes.card}>
           {
