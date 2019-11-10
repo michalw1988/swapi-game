@@ -82,8 +82,7 @@ const GameComponent = () => {
   return (
     <div>
       {
-        loadingContent && 
-        <LoaderComponent>
+        loadingContent && <LoaderComponent>
           <CircularProgress />
         </LoaderComponent>
       }

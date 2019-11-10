@@ -1,15 +1,16 @@
 import React from "react";
 import { shallow, mount } from "enzyme";
 import GameComponent from "./GameComponent";
+import { LoaderComponent } from "./HelperComponents";
 
 describe('GameComponent', () => {
   it('renders correctly', () => {
     shallow(<GameComponent />)
   });
 
-  it("displays 2 buttons", () => {
+  it("displays loader", () => {
     const wrapper = mount(<GameComponent />)
-    expect(wrapper.find('button').length).toEqual(2)
+    expect(wrapper.find(LoaderComponent).exists()).toEqual(true);
   });
 
   it("initialy sets starships a resource type", () => {
